@@ -19,5 +19,5 @@ from django.urls import path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('races/', ClientesView.as_view(), name='races'),
+    # path('races/', ClientesView.as_view(), name='races'),
 ]
