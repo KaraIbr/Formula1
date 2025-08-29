@@ -1,0 +1,49 @@
+{
+    "pilotos": [
+        {
+            "nombre_completo": "Max Verstappen",
+            "equipo": "Red Bull Racing",
+            "numero_carro": 1
+        },
+        {
+            "nombre_completo": "Sergio Pérez",
+            "equipo": "Red Bull Racing",
+            "numero_carro": 11
+        },
+        {
+            "nombre_completo": "Lewis Hamilton",
+            "equipo": "Mercedes",
+            "numero_carro": 44
+        }
+    ],
+    "sesiones": [
+        {
+            "nombre_sesion": "GP Bahréin - Práctica 1",
+            "ubicacion": "Circuito Internacional de Bahréin",
+            "fecha_inicio": "2024-02-29T10:30:00Z",
+            "fecha_fin": "2024-02-29T11:30:00Z"
+        },
+        {
+            "nombre_sesion": "GP Bahréin - Carrera",
+            "ubicacion": "Circuito Internacional de Bahréin",
+            "fecha_inicio": "2024-03-02T15:00:00Z",
+            "fecha_fin": "2024-03-02T17:00:00Z"
+        }
+    ],
+    "datos_carro": [
+        {
+            "piloto_id": 1,
+            "sesion_id": 1,
+            "velocidad": 320.5,
+            "rpm": 12000,
+            "timestamp": "2024-02-29T10:35:00Z"
+        },
+        {
+            "piloto_id": 2,
+            "sesion_id": 1,
+            "velocidad": 315.8,
+            "rpm": 11800,
+            "timestamp": "2024-02-29T10:35:00Z"
+        }
+    ]
+}

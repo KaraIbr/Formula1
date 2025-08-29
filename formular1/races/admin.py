@@ -1,12 +1,14 @@
 from django.contrib import admin
-# from .models import Race
+from .models import Piloto, Sesion, DatosCarro
 
-# @admin.register(Race)
-# class RaceAdmin(admin.ModelAdmin):
-#     list_display = ('id', 'name')
-#     search_fields = ('name',)
-#     list_filter = ('name',)
-#     ordering = ('id',)
-#     list_per_page = 10
-#     list_display_links = ('id', 'name')
-#     list_editable = ('name',)   
+@admin.register(Piloto)
+class PilotoAdmin(admin.ModelAdmin):
+    list_display = ('nombre_completo', 'equipo', 'numero_carro')
+
+@admin.register(Sesion)
+class SesionAdmin(admin.ModelAdmin):
+    list_display = ('nombre_sesion', 'ubicacion', 'fecha_inicio', 'fecha_fin')
+
+@admin.register(DatosCarro)
+class DatosCarroAdmin(admin.ModelAdmin):
+    list_display = ('piloto', 'sesion', 'velocidad', 'rpm', 'timestamp')

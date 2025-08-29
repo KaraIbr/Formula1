@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API de Fórmula 1 - Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .search-section {
+            padding: 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .search-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .search-box {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .search-box label {
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #495057;
+        }
+        
+        .search-box input, .search-box select {
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        .search-box input:focus, .search-box select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .results-section {
+            padding: 30px;
+        }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .result-card {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        .result-card h3 {
+            color: #495057;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 10px;
+        }
+        
+        .result-item {
+            background: #f8f9fa;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .result-item h4 {
+            color: #495057;
+            margin-bottom: 5px;
+        }
+        
+        .result-item p {
+            color: #6c757d;
+            font-size: 14px;
+            margin-bottom: 3px;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #6c757d;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏎️ API de Fórmula 1</h1>
+            <p>Dashboard para consultar datos de pilotos, sesiones y datos técnicos</p>
+        </header>
+        
+        <div class="search-section">
+            <div class="search-grid">
+                <div class="search-box">
+                    <label for="piloto-search">Buscar Piloto:</label>
+                    <input type="text" id="piloto-search" placeholder="Nombre, equipo o país...">
+                </div>
+                <div class="search-box">
+                    <label for="sesion-search">Buscar Sesión:</label>
+                    <input type="text" id="sesion-search" placeholder="Nombre o ubicación...">
+                </div>
+                <div class="search-box">
+                    <label for="piloto-filter">Filtrar por Equipo:</label>
+                    <select id="piloto-filter">
+                        <option value="">Todos los equipos</option>
+                        <option value="Mercedes">Mercedes</option>
+                        <option value="Red Bull">Red Bull</option>
+                        <option value="Ferrari">Ferrari</option>
+                        <option value="McLaren">McLaren</option>
+                        <option value="Aston Martin">Aston Martin</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div style="text-align: center;">
+                <button class="btn" onclick="buscarPilotos()">Buscar Pilotos</button>
+                <button class="btn" onclick="buscarSesiones()">Buscar Sesiones</button>
+                <button class="btn" onclick="buscarDatosCarro()">Datos del Carro</button>
+            </div>
+        </div>
+        
+        <div class="results-section">
+            <div class="results-grid">
+                <div class="result-card">
+                    <h3>🏁 Pilotos</h3>
+                    <div id="pilotos-results">
+                        <p class="loading">Haz clic en "Buscar Pilotos" para ver los resultados</p>
+                    </div>
+                </div>
+                
+                <div class="result-card">
+                    <h3>🏁 Sesiones</h3>
+                    <div id="sesiones-results">
+                        <p class="loading">Haz clic en "Buscar Sesiones" para ver los resultados</p>
+                    </div>
+                </div>
+                
+                <div class="result-card">
+                    <h3>📊 Datos del Carro</h3>
+                    <div id="datos-carro-results">
+                        <p class="loading">Haz clic en "Datos del Carro" para ver los resultados</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function mostrarError(elementId, mensaje) {
+            document.getElementById(elementId).innerHTML = `<div class="error">${mensaje}</div>`;
+        }
+        
+        function mostrarCargando(elementId) {
+            document.getElementById(elementId).innerHTML = '<div class="loading">Cargando...</div>';
+        }
+        
+        function buscarPilotos() {
+            const searchTerm = document.getElementById('piloto-search').value;
+            const equipo = document.getElementById('piloto-filter').value;
+            const resultsDiv = document.getElementById('pilotos-results');
+            
+            mostrarCargando('pilotos-results');
+            
+            let url = '/api/pilotos/';
+            const params = new URLSearchParams();
+            if (searchTerm) params.append('search', searchTerm);
+            if (equipo) params.append('equipo', equipo);
+            if (params.toString()) url += '?' + params.toString();
+            
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        mostrarError('pilotos-results', data.error);
+                        return;
+                    }
+                    
+                    let html = '';
+                    if (data.pilotos && data.pilotos.length > 0) {
+                        data.pilotos.forEach(piloto => {
+                            html += `
+                                <div class="result-item">
+                                    <h4>${piloto.nombre_completo}</h4>
+                                    <p><strong>Equipo:</strong> ${piloto.equipo}</p>
+                                    <p><strong>País:</strong> ${piloto.pais}</p>
+                                    <p><strong>Número:</strong> ${piloto.numero_carro}</p>
+                                </div>
+                            `;
+                        });
+                    } else {
+                        html = '<p class="loading">No se encontraron pilotos</p>';
+                    }
+                    
+                    resultsDiv.innerHTML = html;
+                })
+                .catch(error => {
+                    mostrarError('pilotos-results', 'Error al cargar los pilotos: ' + error.message);
+                });
+        }
+        
+        function buscarSesiones() {
+            const searchTerm = document.getElementById('sesion-search').value;
+            const resultsDiv = document.getElementById('sesiones-results');
+            
+            mostrarCargando('sesiones-results');
+            
+            let url = '/api/sesiones/';
+            if (searchTerm) url += '?search=' + encodeURIComponent(searchTerm);
+            
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        mostrarError('sesiones-results', data.error);
+                        return;
+                    }
+                    
+                    let html = '';
+                    if (data.sesiones && data.sesiones.length > 0) {
+                        data.sesiones.forEach(sesion => {
+                            const fechaInicio = new Date(sesion.fecha_inicio).toLocaleDateString('es-ES');
+                            const fechaFin = new Date(sesion.fecha_fin).toLocaleDateString('es-ES');
+                            
+                            html += `
+                                <div class="result-item">
+                                    <h4>${sesion.nombre_sesion}</h4>
+                                    <p><strong>Ubicación:</strong> ${sesion.ubicacion}</p>
+                                    <p><strong>Inicio:</strong> ${fechaInicio}</p>
+                                    <p><strong>Fin:</strong> ${fechaFin}</p>
+                                </div>
+                            `;
+                        });
+                    } else {
+                        html = '<p class="loading">No se encontraron sesiones</p>';
+                    }
+                    
+                    resultsDiv.innerHTML = html;
+                })
+                .catch(error => {
+                    mostrarError('sesiones-results', 'Error al cargar las sesiones: ' + error.message);
+                });
+        }
+        
+        function buscarDatosCarro() {
+            const resultsDiv = document.getElementById('datos-carro-results');
+            
+            mostrarCargando('datos-carro-results');
+            
+            fetch('/api/datos-carro/?limit=5')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        mostrarError('datos-carro-results', data.error);
+                        return;
+                    }
+                    
+                    let html = '';
+                    if (data.datos_carro && data.datos_carro.length > 0) {
+                        data.datos_carro.forEach(dato => {
+                            const timestamp = new Date(dato.timestamp).toLocaleString('es-ES');
+                            
+                            html += `
+                                <div class="result-item">
+                                    <h4>${dato.piloto.nombre_completo}</h4>
+                                    <p><strong>Sesión:</strong> ${dato.sesion.nombre_sesion}</p>
+                                    <p><strong>Velocidad:</strong> ${dato.velocidad} km/h</p>
+                                    <p><strong>RPM:</strong> ${dato.rpm}</p>
+                                    <p><strong>Acelerador:</strong> ${dato.acelerador}%</p>
+                                    <p><strong>Freno:</strong> ${dato.freno ? 'Activado' : 'No activado'}</p>
+                                    <p><strong>Hora:</strong> ${timestamp}</p>
+                                </div>
+                            `;
+                        });
+                    } else {
+                        html = '<p class="loading">No se encontraron datos del carro</p>';
+                    }
+                    
+                    resultsDiv.innerHTML = html;
+                })
+                .catch(error => {
+                    mostrarError('datos-carro-results', 'Error al cargar los datos del carro: ' + error.message);
+                });
+        }
+    </script>
+</body>
+</html>

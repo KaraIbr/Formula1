@@ -1,0 +1,2 @@
+Dentro de la app 
+va templates, luego static, 
