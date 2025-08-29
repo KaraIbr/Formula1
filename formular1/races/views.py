@@ -1,17 +1,16 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from .models import Piloto, Sesion, DatosCarro
+from .models import Piloto, Sesion
 
 def index(request):
-    """Vista principal que muestra todos los datos"""
-    data = {
-        'pilotos': list(Piloto.objects.values()),
-        'sesiones': list(Sesion.objects.values()),
-        'datos_carro': list(DatosCarro.objects.values())
+    """Vista principal"""
+    context = {
+        'pilotos': Piloto.objects.all(),
+        'sesiones': Sesion.objects.all(),
     }
-    return JsonResponse(data)
+    return render(request, 'races/index.html', context)
 
 def lista_pilotos(request):
     """API endpoint para listar pilotos"""
-    pilotos = list(Piloto.objects.values())
+    pilotos = list(Piloto.objects.all().values())
     return JsonResponse({'pilotos': pilotos})

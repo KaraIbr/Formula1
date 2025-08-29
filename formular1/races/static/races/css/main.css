@@ -1,0 +1,201 @@
+:root {
+    --f1-red: #e10600;
+    --f1-dark: #15151e;
+    --f1-gray: #38383f;
+}
+
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f5f5f5;
+    color: var(--f1-dark);
+}
+
+header {
+    background: linear-gradient(135deg, var(--f1-red) 0%, #cc0000 100%);
+    color: white;
+    padding: 25px;
+    text-align: center;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5em;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+.search-panel {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.search-section {
+    margin-bottom: 20px;
+    padding: 20px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.search-section:hover {
+    border-color: var(--f1-red);
+    box-shadow: 0 2px 8px rgba(225,6,0,0.1);
+}
+
+.search-section h3 {
+    margin-top: 0;
+    color: var(--f1-red);
+    font-size: 1.3em;
+    border-bottom: 2px solid var(--f1-red);
+    padding-bottom: 10px;
+}
+
+.controls {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.control-group {
+    flex: 1;
+    min-width: 200px;
+}
+
+.control-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--f1-gray);
+    font-weight: 500;
+}
+
+.controls input, .controls select {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 1em;
+    transition: all 0.3s ease;
+}
+
+.controls input:focus, .controls select:focus {
+    border-color: var(--f1-red);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(225,6,0,0.1);
+}
+
+.data-section {
+    background-color: white;
+    margin: 20px 0;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.piloto-card, .sesion-card {
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin: 15px 0;
+    border-radius: 8px;
+    background: linear-gradient(to right, #fff, #f9f9f9);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.piloto-card:hover, .sesion-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.stat-group {
+    border-left: 3px solid var(--f1-red);
+    padding-left: 15px;
+    transition: all 0.3s ease;
+}
+
+.stat-group:hover {
+    background-color: #f9f9f9;
+    border-left-width: 5px;
+}
+
+.stat-label {
+    color: var(--f1-gray);
+    font-size: 0.9em;
+    margin-bottom: 4px;
+}
+
+.stat-value {
+    font-size: 1.2em;
+    font-weight: 600;
+    color: var(--f1-dark);
+}
+
+h2 {
+    color: var(--f1-red);
+    font-size: 1.8em;
+    border-bottom: 3px solid var(--f1-red);
+    padding-bottom: 10px;
+    margin-top: 0;
+}
+
+.results-count {
+    color: var(--f1-gray);
+    margin: 15px 0;
+    font-size: 1.1em;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.pagination button {
+    padding: 8px 15px;
+    border: 2px solid var(--f1-red);
+    background: white;
+    color: var(--f1-red);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.pagination button:hover {
+    background: var(--f1-red);
+    color: white;
+}
+
+.pagination button:disabled {
+    border-color: #ddd;
+    color: #999;
+    cursor: not-allowed;
+}
+
+.pagination-info {
+    color: var(--f1-gray);
+    text-align: center;
+    margin-top: 10px;
+}
+
+.hidden {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .control-group {
+        min-width: 100%;
+    }
+    .piloto-card, .sesion-card {
+        grid-template-columns: 1fr;
+    }
+}
